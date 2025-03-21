@@ -72,6 +72,8 @@ To view real-time:
 - Document generation (multi-core progress bars)
 - Import progress & cleanup logs
 
+![Progress monitoring script screenshot](https://fabiocionini.it/tmux.jpeg)
+
 Run:
 
 ```bash
