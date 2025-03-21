@@ -18,11 +18,12 @@ tmux split-window -v
 
 # Top pane → data-generator progress
 tmux select-pane -t 0
-tmux send-keys "docker compose --project-name mongodb-data-generator attach data-generator" C-m
+tmux send-keys "export DOCKER_CLI_HINTS=false; docker compose --project-name mongodb-data-generator attach data-generator" C-m
 
 # Middle pane → mongoimporter logs
 tmux select-pane -t 1
 tmux send-keys "
+export DOCKER_CLI_HINTS=false;
 echo '⏳ Waiting for mongoimporter container...';
 while ! docker compose ps | grep mongoimporter | grep 'Up'; do
   sleep 2;

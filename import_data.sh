@@ -1,5 +1,10 @@
 #!/bin/bash
 set -e
+
+# === CLEANUP PREVIOUS FILES ===
+echo "🧹 Cleaning up old files if present..."
+rm -f /data/testdata.json /data/testdata.json.gz /data/data_ready.flag /data/importer.log
+
 LOGFILE=/data/importer.log
 exec > >(tee -a "$LOGFILE") 2>&1
 
@@ -39,3 +44,7 @@ else
 fi
 
 rm -f /data/data_ready.flag
+
+sleep 3
+echo "✅ Import finished."
+sleep 3
