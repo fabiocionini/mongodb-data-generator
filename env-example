@@ -11,5 +11,9 @@ MONGO_PORT=27017
 MONGO_INITDB_ROOT_USERNAME=admin
 MONGO_INITDB_ROOT_PASSWORD=secretpassword
 
+MONGO_DB=testdb
+MONGO_COLLECTION=testcol
+MONGO_BATCHSIZE=10000
+
 # Number of parallel insertion workers (auto = auto-detect CPU cores)
 NUM_WORKERS=auto

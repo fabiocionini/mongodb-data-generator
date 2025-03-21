@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# Add at the top:
+DB_NAME="${MONGO_DB:-testdb}"
+COLLECTION_NAME="${MONGO_COLLECTION:-testcol}"
+BATCH_SIZE="${MONGO_BATCHSIZE:-10000}"
+
 # === CLEANUP PREVIOUS FILES ===
 echo "🧹 Cleaning up old files if present..."
 rm -f /data/testdata.json /data/testdata.json.gz /data/data_ready.flag /data/importer.log
@@ -34,11 +39,11 @@ done
 echo "✅ Data file found at $FILE, starting import..."
 
 if [ "$COMPRESS" = "1" ]; then
-  stdbuf -oL mongoimport --host mongo --port 27017 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin --db testdb --collection testcol --file "$FILE" --gzip --numInsertionWorkers "$NUM_WORKERS" --batchSize 10000
+  stdbuf -oL mongoimport --host mongo --port 27017 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin --db "$DB_NAME" --collection "$COLLECTION_NAME" --file "$FILE" --gzip --numInsertionWorkers "$NUM_WORKERS" --batchSize "$BATCH_SIZE"
   echo "🧹 Cleaning up compressed file..."
   rm -f "$FILE"
 else
-  stdbuf -oL mongoimport --host mongo --port 27017 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin --db testdb --collection testcol --file "$FILE" --numInsertionWorkers "$NUM_WORKERS" --batchSize 10000
+  stdbuf -oL mongoimport --host mongo --port 27017 --username "$MONGO_INITDB_ROOT_USERNAME" --password "$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin --db "$DB_NAME" --collection "$COLLECTION_NAME" --file "$FILE" --numInsertionWorkers "$NUM_WORKERS" --batchSize "$BATCH_SIZE"
   echo "🧹 Cleaning up uncompressed file..."
   rm -f "$FILE"
 fi
