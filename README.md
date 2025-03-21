@@ -1,6 +1,6 @@
 # MongoDB Large Test Data Generator 🚀
 
-This project quickly generates **10 million+ realistic MongoDB documents** using `Faker` + parallel processing, and imports them into MongoDB efficiently.
+This project quickly generates **millions of MongoDB documents** using `Faker` + parallel processing, and imports them into MongoDB efficiently using native `mongoimport` tool.
 
 ---
 
@@ -75,6 +75,8 @@ To view real-time:
 
 - Document generation (multi-core progress bars)
 - Import progress & cleanup logs
+
+![Progress monitoring script screenshot](https://fabiocionini.it/tmux.jpeg)
 
 Run:
 
