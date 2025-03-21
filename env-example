@@ -1,0 +1,15 @@
+# Enable Gzip compression (1 = enabled, 0 = disabled)
+COMPRESS=0
+
+# Total number of documents to generate
+TOTAL_DOCS=10000000
+
+# MongoDB exposed port (on host machine)
+MONGO_PORT=27017
+
+# MongoDB authentication
+MONGO_INITDB_ROOT_USERNAME=admin
+MONGO_INITDB_ROOT_PASSWORD=secretpassword
+
+# Number of parallel insertion workers (auto = auto-detect CPU cores)
+NUM_WORKERS=auto

@@ -1,0 +1,54 @@
+name: mongodb-data-generator
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    ports:
+      - "${MONGO_PORT}:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - mongo-data:/data/db
+      - ./data:/data
+
+  data-generator:
+    image: python:3.12
+    container_name: data-generator
+    tty: true
+    volumes:
+      - ./data:/data
+      - .:/app
+    working_dir: /app
+    env_file:
+      - .env
+    command: >
+      sh -c "
+        pip install --quiet --disable-pip-version-check tqdm faker &&
+        python generate_data.py
+      "
+    depends_on:
+      - mongo
+
+  importer:
+    image: mongo:7
+    container_name: mongoimporter
+    stdin_open: true
+    volumes:
+      - ./data:/data
+      - ./import_data.sh:/import_data.sh  # Mount script
+    env_file:
+      - .env
+    command: >
+      bash -c "
+        chmod +x /import_data.sh &&
+        /import_data.sh
+      "
+    tty: true
+    depends_on:
+      - mongo
+      - data-generator
+
+volumes:
+  mongo-data:
