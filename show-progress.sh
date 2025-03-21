@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source .env
 SESSION_NAME="mongo-data-progress"
 
 # Kill previous session if exists
@@ -41,7 +41,7 @@ while true; do
 
   if [ \"\$DG_STATUS\" -eq 0 ] && [ \"\$IMPORTER_STATUS\" -eq 0 ]; then
     echo '✅ Both containers finished. Waiting 15 seconds...';
-    sleep 15;
+    sleep \"${TMUX_EXIT_SLEEP:-15}\"
     echo '🚪 Exiting tmux now...';
     tmux kill-session -t $SESSION_NAME
     exit 0

@@ -2,7 +2,6 @@ import json
 from tqdm import tqdm
 from multiprocessing import Pool, cpu_count
 import os
-import gzip
 
 from document_template import generate_document
 
@@ -13,10 +12,6 @@ DOCS_PER_CORE = TOTAL_DOCS // CORES
 
 TEMP_FOLDER = '/data/tmp'
 FINAL_FILE = '/data/testdata.json'
-COMPRESS = os.getenv('COMPRESS', '0') == '1'
-
-if COMPRESS:
-    FINAL_FILE += '.gz'
 
 os.makedirs(TEMP_FOLDER, exist_ok=True)
 
@@ -44,16 +39,10 @@ if __name__ == "__main__":
         chunk_files = p.map(generate_chunk, range(CORES))
 
     print("Merging chunks...")
-    if COMPRESS:
-        with gzip.open(FINAL_FILE, 'wt') as outfile:
-            for fname in chunk_files:
-                with open(fname) as infile:
-                    outfile.writelines(infile)
-    else:
-        with open(FINAL_FILE, 'w') as outfile:
-            for fname in chunk_files:
-                with open(fname) as infile:
-                    outfile.writelines(infile)
+    with open(FINAL_FILE, 'w') as outfile:
+        for fname in chunk_files:
+            with open(fname) as infile:
+                outfile.writelines(infile)
 
     print(f"Cleaning up temporary files...")
     for fname in chunk_files:

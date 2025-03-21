@@ -7,11 +7,20 @@ services:
     ports:
       - "${MONGO_PORT}:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
     volumes:
       - mongo-data:/data/db
-      - ./data:/data
+    entrypoint: >
+      bash -c "
+      if [ -z \"${MONGO_URI}\" ]; then
+        echo '🔌 Starting local MongoDB instance...';
+        exec docker-entrypoint.sh mongod
+      else
+        echo '🔌 Skipping local MongoDB instance since MONGO_URI is set.';
+        sleep infinity
+      fi
+      "
 
   data-generator:
     image: python:3.12

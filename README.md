@@ -19,25 +19,30 @@ This project quickly generates **millions of MongoDB documents** using `Faker` +
 Copy `env-example` to a new `.env` file and adjust:
 
 ```env
-# Enable Gzip compression (1 = enabled, 0 = disabled)
-COMPRESS=0
+# Full URI for remote MongoDB (e.g., Atlas), leave empty to use local instance
+MONGO_URI=""
 
-# Total number of documents to generate
-TOTAL_DOCS=10000000
-
-# MongoDB exposed port (on host machine)
+# Local mongo container with exposed port (internal is 27017)
+MONGO_HOST=mongo
 MONGO_PORT=27017
 
-# MongoDB authentication
-MONGO_INITDB_ROOT_USERNAME=admin
-MONGO_INITDB_ROOT_PASSWORD=secretpassword
+# MongoDB Authentication (Used for both local and external MongoDB)
+MONGO_USERNAME=admin
+MONGO_PASSWORD=password
 
+# Database & Collection Config
 MONGO_DB=testdb
 MONGO_COLLECTION=testcol
 MONGO_BATCHSIZE=10000
 
-# Number of parallel insertion workers (auto = auto-detect CPU cores)
+# Data Generation Settings
+TOTAL_DOCS=1000000
+
+# Auto-detect CPU cores or set manually
 NUM_WORKERS=auto
+
+# Tmux Session Sleep Before Auto Exit
+TMUX_EXIT_SLEEP=15
 ```
 
 ---
